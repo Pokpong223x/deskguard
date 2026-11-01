@@ -1,0 +1,10 @@
+{
+  "profile": "product-admin",
+  "sourceRoots": ["src", "App.tsx"],
+  "locale": "th-TH",
+  "canonicalMap": "UX-CONTRACT.md",
+  "requiredCapabilities": ["Form", "Toast", "Date", "Scrollbar", "CRUD"],
+  "ownership": { "Date": "native" },
+  "requiredCommands": ["typecheck", "unit"],
+  "commands": { "typecheck": "npm run typecheck", "unit": "npm test" }
+}

@@ -1,0 +1,2 @@
+Built-in imagegen. Reference: frame-00.png extracted from user video.
+Transparent square UI illustration: flat lilac #D6A5F5 abstract rounded mitten/peace-sign mascot, two soft raised fingers, thin near-black smiling closed eyes, holding a small black-outlined round clock with simple hands and no numerals. Match the supplied sports illustration style. Centered, complete silhouette, generous transparent margins. No scene, UI, device frame, mockup, gradient, shadow, texture, lettering, or watermark. Intended at 160px on mint #CAE999.

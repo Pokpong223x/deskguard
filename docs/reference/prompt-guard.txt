@@ -1,0 +1,7 @@
+Asset: assets/mascot-guard.png
+Method: built-in image_gen, transparent_background=true.
+Style reference: docs/reference/frame-00.png (extracted from user's MP4).
+
+Create one transparent PNG cutout for DeskGuard. Match the reference's flat friendly abstract orange star mascot: seven soft irregular rounded rays, cheerful curved closed eyes, bold simple silhouette. Adapt it to phone monitoring by having it hug a small cream smartphone with thin near-black outline and a tiny shield mark. Orange #FF8D4A body, near-black linework, no text, no background, no UI, no gradients, shadows, texture or 3D. Center the fully visible character around 70 percent of a square canvas with generous transparent margins. It will sit on lavender #C9CEF4 at about160px.
+
+Actual result: RGBA PNG, 1254 × 1254. Transparent corners; body alpha approximately254. The output includes slight tonal variation in the orange fill but preserves the reference's simple playful silhouette.

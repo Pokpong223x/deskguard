@@ -1,0 +1,62 @@
+{
+  "expo": {
+    "name": "DeskGuard",
+    "slug": "deskguard",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "deskguard",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.deskguard.studentapp",
+      "infoPlist": {
+        "NSMotionUsageDescription": "DeskGuard ใช้การเคลื่อนไหวของเครื่องเพื่อแจ้งเตือนเมื่อมือถือถูกขยับระหว่างเฝ้าระวัง"
+      }
+    },
+    "android": {
+      "package": "com.deskguard.studentapp",
+      "permissions": [
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-sensors",
+        {
+          "motionPermission": "DeskGuard ใช้การเคลื่อนไหวของเครื่องเพื่อแจ้งเตือนเมื่อมือถือถูกขยับระหว่างเฝ้าระวัง"
+        }
+      ],
+      "expo-secure-store",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "DeskGuard ใช้ Face ID เพื่อยืนยันว่าเป็นคุณก่อนหยุดการเฝ้าระวังและเสียงแจ้งเตือน"
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "enableBackgroundRecording": false,
+          "enableBackgroundPlayback": false
+        }
+      ],
+      "expo-font",
+      "expo-asset"
+    ],
+    "web": {
+      "bundler": "metro",
+      "name": "DeskGuard",
+      "shortName": "DeskGuard"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6f5ac867-caf4-479e-bb63-03c173904cb0"
+      }
+    },
+    "owner": "ppmb"
+  }
+}

@@ -1,0 +1,6 @@
+Built-in Image Gen; transparent_background: true.
+Style reference: frame-00.png, extracted from the user-provided video.
+
+Single standalone transparent square mascot asset for DeskGuard, not a UI mockup. Friendly coral-pink (#EF8E9B) abstract rounded splash mascot with a wide rounded base and upward soft rounded lobes, two thin near-black curved closed smiling eyes, and three short near-black wavy motion-signal lines above. Match the reference's flat, playful, unoutlined silhouette and sparse facial/accessory linework. Center the complete silhouette with transparent margin. Readable at 160px. No sports equipment, text, letters, numbers, logos, UI, card background, border, watermark, gradient, shadow, texture, or 3D.
+
+Saved asset: assets/mascot-motion.png

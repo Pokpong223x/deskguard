@@ -1,0 +1,70 @@
+build:
+  name: DeskGuard unsigned iPhone app for Sideloadly
+  steps:
+    - eas/checkout
+    - run:
+        name: Install locked JavaScript dependencies
+        command: npm ci --include=dev
+    - run:
+        name: Generate iOS project and install CocoaPods
+        command: |
+          set -euo pipefail
+          npx expo prebuild --platform ios --no-install
+          cd ios
+          pod install
+    - run:
+        name: Compile Release for a physical iPhone without signing
+        command: |
+          set -euo pipefail
+          mkdir -p .eas-output artifacts
+          xcodebuild \
+            -workspace ios/DeskGuard.xcworkspace \
+            -scheme DeskGuard \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath .eas-output/DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY= \
+            build 2>&1 | tee artifacts/xcodebuild.log
+    - run:
+        name: Verify native permissions and package unsigned IPA
+        command: |
+          set -euo pipefail
+          APP_PATH='.eas-output/DerivedData/Build/Products/Release-iphoneos/DeskGuard.app'
+          test -s "$APP_PATH/main.jsbundle"
+          python3 - "$APP_PATH" <<'PY'
+          import json, pathlib, plistlib, subprocess, sys
+          app = pathlib.Path(sys.argv[1])
+          with (app / 'Info.plist').open('rb') as stream:
+              info = plistlib.load(stream)
+          assert info['CFBundleIdentifier'] == 'com.deskguard.studentapp'
+          assert 'iPhoneOS' in info['CFBundleSupportedPlatforms']
+          assert info.get('NSFaceIDUsageDescription'), 'Missing Face ID permission'
+          assert info.get('NSMotionUsageDescription'), 'Missing motion permission'
+          executable = app / info['CFBundleExecutable']
+          architectures = subprocess.check_output(['lipo', '-archs', str(executable)], text=True).strip()
+          assert 'arm64' in architectures.split(), architectures
+          report = {
+              'bundleIdentifier': info['CFBundleIdentifier'],
+              'version': info['CFBundleShortVersionString'],
+              'minimumIOS': info['MinimumOSVersion'],
+              'architectures': architectures,
+              'faceIDPermission': info['NSFaceIDUsageDescription'],
+              'motionPermission': info['NSMotionUsageDescription'],
+              'embeddedJavaScript': True,
+              'signing': 'Unsigned; sign and install using Sideloadly.'
+          }
+          pathlib.Path('artifacts/build-info.json').write_text(json.dumps(report, indent=2, ensure_ascii=False))
+          print(json.dumps(report, indent=2, ensure_ascii=False))
+          PY
+          mkdir -p .eas-output/package/Payload
+          ditto "$APP_PATH" .eas-output/package/Payload/DeskGuard.app
+          (cd .eas-output/package && ditto -c -k --keepParent Payload ../../artifacts/DeskGuard-unsigned.ipa)
+          (cd artifacts && shasum -a 256 DeskGuard-unsigned.ipa > DeskGuard-unsigned.ipa.sha256)
+    - eas/upload_artifact:
+        name: Upload IPA and native build verification
+        inputs:
+          type: build-artifact
+          path: artifacts
