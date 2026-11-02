@@ -21,7 +21,6 @@ coverage/
 android/
 ios/
 docs/
-tests/
 DESIGN.md
 UX-CONTRACT.md
 design-qa.md

@@ -2,7 +2,7 @@
   "expo": {
     "name": "DeskGuard",
     "slug": "deskguard",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "scheme": "deskguard",
@@ -11,7 +11,8 @@
       "bundleIdentifier": "com.deskguard.studentapp",
       "infoPlist": {
         "NSMotionUsageDescription": "DeskGuard ใช้การเคลื่อนไหวของเครื่องเพื่อแจ้งเตือนเมื่อมือถือถูกขยับระหว่างเฝ้าระวัง"
-      }
+      },
+      "buildNumber": "2"
     },
     "android": {
       "package": "com.deskguard.studentapp",
@@ -19,7 +20,8 @@
         "android.permission.USE_BIOMETRIC",
         "android.permission.USE_FINGERPRINT",
         "android.permission.MODIFY_AUDIO_SETTINGS"
-      ]
+      ],
+      "versionCode": 2
     },
     "plugins": [
       [

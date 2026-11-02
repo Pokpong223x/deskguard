@@ -6,6 +6,7 @@ import { useAlarmSound } from "./useAlarmSound";
 import { waitForAudioReady } from "../services/audioReady";
 import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
 import { MotionDetector, type Vector3 } from "../domain/motion";
+import { MutationQueue } from "../domain/mutationQueue";
 import {
   interruptedPhase,
   shouldHoldForDeviceAuth,
@@ -94,7 +95,7 @@ export function useDeskGuard() {
   const awaitingCalibration = useRef(false);
   const sessionStarted = useRef(0);
   const demoMotionUntil = useRef(0);
-  const writeQueue = useRef<Promise<unknown>>(Promise.resolve());
+  const writeQueue = useRef(new MutationQueue());
   const pinAttempts = useRef({ count: 0, lockedUntil: 0 });
   const pinBusy = useRef(false);
   const deviceAuthRef = useRef(deviceAuth);
@@ -123,9 +124,7 @@ export function useDeskGuard() {
   // All persistent mutations are serialized, including alarm events, settings,
   // PIN changes and history clearing. A late write cannot restore deleted data.
   const enqueue = useCallback(<T>(operation: () => Promise<T>): Promise<T> => {
-    const result = writeQueue.current.then(operation, operation);
-    writeQueue.current = result.catch(() => undefined);
-    return result;
+    return writeQueue.current.run(operation);
   }, []);
 
   const stopSignals = useCallback(() => {
@@ -601,6 +600,10 @@ export function useDeskGuard() {
       return;
     }
     if (phaseRef.current !== "idle") return;
+    if (pinBusy.current || writeQueue.current.pending) {
+      setError("กำลังบันทึกข้อมูล รอสักครู่แล้วเริ่มเฝ้าระวังอีกครั้ง");
+      return;
+    }
     if (alarmSound.isBusy()) {
       setError("รอให้เตรียมเสียงเสร็จก่อนเริ่มเฝ้าระวัง");
       return;
@@ -797,6 +800,10 @@ export function useDeskGuard() {
       try {
         if (pinRef.current && !(await checkPin(currentPin ?? ""))) return false;
         return await enqueue(async () => {
+          if (phaseRef.current !== "idle" || !foreground.current) {
+            setError("กลับเข้าแอปและหยุดเฝ้าระวังก่อนเปลี่ยน PIN");
+            return false;
+          }
           pinRef.current = await persistNewPin(newPin);
           setHasPin(true);
           setNotice("บันทึก PIN แล้ว");

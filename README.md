@@ -1,12 +1,30 @@
 # DeskGuard
 
+## รุ่นเตรียมใช้งาน 1.0.1 — 2 พฤศจิกายน 2026
+
+ใช้ Node.js 24 และติดตั้ง dependency ตาม lockfile:
+
+```powershell
+npm ci
+npm run verify
+npm start
+```
+
+`npm start` เปิด Expo Go สำหรับทดสอบบนโทรศัพท์ ส่วน `npm run start:dev` ใช้กับแอป development build ที่ติดตั้งไว้แล้ว
+
+ทดลองบนคอมพิวเตอร์ด้วย `npm run web` หรือสร้างเว็บด้วย `npm run export:web` แล้วเปิดด้วย `npm run preview` ที่ http://127.0.0.1:4173 เว็บใช้โหมดตัวอย่าง ไม่ตรวจจับเซนเซอร์มือถือจริง และต้องเปิดผ่าน HTTP แทนการดับเบิลคลิก `index.html`
+
+รุ่นนี้ป้องกันการเริ่มเฝ้าระวังระหว่างบันทึก PIN/การตั้งค่า เพิ่มชุดทดสอบการเขียนข้อมูลและตัวเปิดเว็บ และเพิ่ม CI ตรวจ TypeScript, tests และ export ทั้งเว็บ/iOS ดูขอบเขตผลตรวจล่าสุดใน [docs/RELEASE-1.0.1.md](docs/RELEASE-1.0.1.md)
+
+การ export iOS สร้างเฉพาะ JavaScript bundle หากต้องการติดตั้งเป็นแอป iPhone ต้อง build IPA และเซ็นก่อนติดตั้งตามขั้นตอนด้านล่าง รุ่นนี้ยังต้องเปิดแอปและหน้าจอไว้ระหว่างเฝ้าระวัง
+
 แอปโปรเจคเซนเซอร์สำหรับ iPhone: วางเครื่อง เปิดเฝ้าระวัง และส่งเสียงเตือนเมื่อมีการขยับเกินเกณฑ์ ใช้ **Accelerometer และ Gyroscope จริง** ผ่าน Expo Sensors พร้อมกราฟการเคลื่อนไหว ประวัติเหตุการณ์ และการยืนยันด้วย Face ID, Touch ID หรือรหัสเครื่องเพื่อหยุดเฝ้าระวัง มี PIN ของแอปเป็นอีกทางเลือก
 
 เขียนด้วย React Native + TypeScript + Expo SDK 57 ทดสอบเซนเซอร์และการยืนยันด้วยรหัสเครื่องหรือ PIN ของแอปผ่าน Expo Go ที่รองรับ SDK เดียวกันได้ ส่วน Face ID ต้องติดตั้งแอป DeskGuard ที่ build แยก
 
 ## เริ่มใช้งานบน iPhone
 
-1. ติดตั้ง Node.js รุ่น LTS บนคอมพิวเตอร์ และติดตั้ง [Expo Go](https://expo.dev/go) บน iPhone ที่รองรับ SDK 57 (iOS 16.4 ขึ้นไป)
+1. ติดตั้ง Node.js 24 บนคอมพิวเตอร์ และใช้ Expo Go ที่รองรับ SDK 57 บน iPhone (iOS 16.4 ขึ้นไป) หากยังไม่มี Expo Go รุ่นนี้: รุ่นใน App Store รองรับถึง SDK 54 และการสร้าง Expo Go สำหรับ SDK 57 ผ่าน TestFlight ต้องมีสมาชิก Apple Developer Program ตาม [เอกสาร Expo](https://docs.expo.dev/troubleshooting/expo-go-version-mismatch/) หรือใช้ IPA ที่ build แยกตามขั้นตอนด้านล่าง
 2. เปิด Terminal ในโฟลเดอร์โปรเจค แล้วรัน:
 
    ```powershell

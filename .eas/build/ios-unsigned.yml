@@ -6,6 +6,11 @@ build:
         name: Install locked JavaScript dependencies
         command: npm ci --include=dev
     - run:
+        name: Verify source before native compilation
+        command: |
+          npm run verify
+          npx expo install --check
+    - run:
         name: Generate iOS project and install CocoaPods
         command: |
           set -euo pipefail
