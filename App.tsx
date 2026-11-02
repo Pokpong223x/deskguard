@@ -129,6 +129,14 @@ function DeskGuard() {
     if (alarm) setTab("guard");
   }, [alarm]);
   useEffect(() => {
+    if (guard.phase === "armed") setDarkScreen(true);
+  }, [guard.phase]);
+  useEffect(() => {
+    if (guard.phase !== "armed" || darkScreen || sheet !== null) return;
+    const timer = setTimeout(() => setDarkScreen(true), 15000);
+    return () => clearTimeout(timer);
+  }, [guard.phase, darkScreen, sheet]);
+  useEffect(() => {
     if (guard.phase === "idle" || guard.phase === "interrupted")
       setDarkScreen(false);
     if (guard.phase === "interrupted") setTab("guard");

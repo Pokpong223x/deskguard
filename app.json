@@ -50,6 +50,7 @@
       "expo-asset"
     ],
     "web": {
+      "favicon": "./assets/favicon.png",
       "bundler": "metro",
       "name": "DeskGuard",
       "shortName": "DeskGuard"
