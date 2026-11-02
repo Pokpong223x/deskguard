@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "DeskGuard",
+    "icon": "./assets/icon.png",
     "slug": "deskguard",
     "version": "1.0.1",
     "orientation": "portrait",
