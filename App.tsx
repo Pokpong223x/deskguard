@@ -1,4 +1,5 @@
 import { Text, LanguageProvider, useLanguage, translate } from "./src/i18n";
+import appConfig from "./app.json";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -820,7 +821,7 @@ function DeskGuard() {
                 </Panel>
                 <View style={s.about}>
                   <Icon name="shield-checkmark-outline" color={colors.muted} />
-                  <Text style={s.aboutTitle}>DeskGuard 1.0</Text>
+                  <Text style={s.aboutTitle}>DeskGuard {appConfig.expo.version} · Build {appConfig.expo.ios.buildNumber}</Text>
                   <Text style={s.aboutText}>
                     โปรเจคตรวจจับการเคลื่อนไหวด้วยเซนเซอร์{"\n"}ทำงานขณะเปิดแอป
                     ไม่รับประกันการป้องกันการโจรกรรม
