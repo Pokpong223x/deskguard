@@ -1,5 +1,7 @@
 export type Language = 'th' | 'en';
-const pairs = `ทุกการขยับ เห็นได้ชัด|Every movement, clearly
+const pairs = `หยุดเตือนเมื่อวางนิ่ง|Quiet when still
+นิ่ง 3 วินาทีจะหยุดเสียงและสั่น แต่ยังเฝ้าต่อ ถือให้นิ่งก็หยุดได้ ไม่ได้ตรวจตำแหน่งเดิม|After 3 seconds of stillness, sound and vibration stop while monitoring continues. Holding still also works; the original location is not detected.
+ทุกการขยับ เห็นได้ชัด|Every movement, clearly
 ข้อมูลตัวอย่าง|Demo data
 เซนเซอร์สด|Live sensors
 รอสัญญาณ|Waiting for signal

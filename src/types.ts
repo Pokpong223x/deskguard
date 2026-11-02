@@ -10,6 +10,7 @@ export interface GuardSettings {
   sensitivity: Sensitivity;
   sound: boolean;
   haptics: boolean;
+  autoQuiet: boolean;
 }
 
 export interface GuardReading {

@@ -12,6 +12,7 @@ export const DEFAULT_SETTINGS: GuardSettings = {
   sensitivity: "medium",
   sound: true,
   haptics: true,
+  autoQuiet: false,
 };
 
 export interface PinRecord {
@@ -34,7 +35,7 @@ function parseSettings(raw: string | null): GuardSettings {
   ) {
     throw new Error("Invalid settings");
   }
-  return value as unknown as GuardSettings;
+  return { ...value, autoQuiet: value.autoQuiet === true } as unknown as GuardSettings;
 }
 
 function validEvent(item: unknown): item is GuardEvent {

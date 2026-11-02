@@ -74,3 +74,7 @@ The selected-clip reskin additionally requires rendered visual comparison agains
 ## Language
 The header language button switches between Thai and English. src/i18n.tsx owns the language context and persisted preference; src/translations.ts owns display translations. Event dates follow the chosen language. Switching language never resets monitoring. Unmapped diagnostic messages retain their original text rather than losing actionable detail.
 
+
+## Optional quiet-on-still behavior
+The autoQuiet setting defaults off and is editable only while idle. When enabled, 3 seconds of continuously stable acceleration and low angular speed silence both sound and vibration and rearm monitoring. Missing samples never count as stillness. This does not establish return to the original location; holding the device still also qualifies. Ending monitoring still requires authentication.
+

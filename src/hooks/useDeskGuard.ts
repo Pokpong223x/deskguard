@@ -1,3 +1,4 @@
+import { StillnessDetector } from "../domain/stillness";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AppState, Platform, Vibration } from "react-native";
 import { Accelerometer, Gyroscope } from "expo-sensors";
@@ -81,6 +82,7 @@ export function useDeskGuard() {
   const historyRef = useRef<GuardEvent[]>([]);
   const pinRef = useRef<PinRecord | null>(null);
   const readingRef = useRef<GuardReading>(EMPTY_READING);
+  const stillness = useRef(new StillnessDetector());
   const detector = useRef(new MotionDetector("medium"));
   const subscriptions = useRef<Array<{ remove(): void }>>([]);
   const generation = useRef(0);
@@ -112,6 +114,7 @@ export function useDeskGuard() {
   }, []);
 
   const setPhase = useCallback((value: GuardPhase) => {
+    stillness.current.reset();
     phaseRef.current = value;
     if (mounted.current) setPhaseState(value);
   }, []);
@@ -196,8 +199,10 @@ export function useDeskGuard() {
       if (!foreground.current || !mounted.current) return;
       if (
         ![acceleration.x, acceleration.y, acceleration.z].every(Number.isFinite)
-      )
+      ) {
+        stillness.current.reset();
         return;
+      }
       if (
         modeRef.current === "device" &&
         (phaseRef.current === "countdown" || phaseRef.current === "armed") &&
@@ -231,12 +236,20 @@ export function useDeskGuard() {
         setPhase("armed");
         return;
       }
+      if (phaseRef.current === "alarm" && settingsRef.current.autoQuiet && !authInFlight.current) {
+        if (stillness.current.sample(acceleration, rotation, now)) {
+          stopSignals();
+          detector.current.reset();
+          setPhase("armed");
+          return;
+        }
+      } else stillness.current.reset();
       if (phaseRef.current === "armed" && result.triggered) {
         setPhase("alarm");
         appendEvent("motion");
       }
     },
-    [appendEvent, interrupt, setPhase, setSensorStatus],
+    [appendEvent, interrupt, setPhase, setSensorStatus, stopSignals],
   );
 
   const connectSensors = useCallback(

@@ -680,6 +680,15 @@ function DeskGuard() {
                     disabled={active || busy}
                     onChange={(haptics) => void updateSettings({ haptics })}
                   />
+                  <View style={s.separator} />
+                  <SettingSwitch
+                    icon="volume-mute-outline"
+                    title="หยุดเตือนเมื่อวางนิ่ง"
+                    description="นิ่ง 3 วินาทีจะหยุดเสียงและสั่น แต่ยังเฝ้าต่อ ถือให้นิ่งก็หยุดได้ ไม่ได้ตรวจตำแหน่งเดิม"
+                    value={guard.settings.autoQuiet}
+                    disabled={active || busy}
+                    onChange={(autoQuiet) => void updateSettings({ autoQuiet })}
+                  />
                 </Panel>
                 {!guard.settings.sound && !guard.settings.haptics && (
                   <Feedback message="ปิดทั้งเสียงและการสั่นอยู่ แอปจะแจ้งเตือนด้วยภาพบนหน้าจอเท่านั้น" />
