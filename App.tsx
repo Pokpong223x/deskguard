@@ -1,3 +1,4 @@
+import { Text, LanguageProvider, useLanguage, translate } from "./src/i18n";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -10,7 +11,6 @@ import {
   StatusBar,
   StyleSheet,
   Switch,
-  Text,
   View,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -91,11 +91,14 @@ export default function App() {
   }
   return (
     <SafeAreaProvider>
+      <LanguageProvider>
       <DeskGuard />
+      </LanguageProvider>
     </SafeAreaProvider>
   );
 }
 function DeskGuard() {
+  const { language, toggle } = useLanguage();
   const guard = useDeskGuard();
   const [tab, setTab] = useState<Tab>("guard");
   const [sheet, setSheet] = useState<Sheet>(null);
@@ -146,9 +149,10 @@ function DeskGuard() {
   }, [tab, guard.alarmSound.stopPreview]);
   useEffect(() => {
     if (Platform.OS === "web" && typeof document !== "undefined") {
-      document.title = `${tabs.find((item) => item.key === tab)?.label} · DeskGuard`;
+      document.title = `${translate(tabs.find((item) => item.key === tab)?.label ?? "", language)} · DeskGuard`;
+      document.documentElement.lang = language;
     }
-  }, [tab]);
+  }, [tab, language]);
   const submit = async () => {
     if (modalBusy) return;
     guard.clearFeedback();
@@ -264,6 +268,9 @@ function DeskGuard() {
       />
       <SafeAreaView style={s.app} edges={["top", "left", "right"]}>
         <View style={s.header}>
+          <Pressable onPress={toggle} accessibilityRole="button" accessibilityLabel={language === "th" ? "Switch to English" : "เปลี่ยนเป็นภาษาไทย"} style={{ minWidth: 44, minHeight: 44, alignItems: "center", justifyContent: "center" }}>
+            <Text style={s.cardTitle}>{language === "th" ? "EN" : "ไทย"}</Text>
+          </Pressable>
           <View style={s.brand}>
             <View style={s.brandIcon}>
               <Icon
@@ -1135,7 +1142,8 @@ function SettingSwitch({
 }
 function EventRow({ event, last }: { event: GuardEvent; last: boolean }) {
   const interrupted = event.kind === "interrupted";
-  const date = new Intl.DateTimeFormat("th-TH", {
+  const { language } = useLanguage();
+  const date = new Intl.DateTimeFormat(language === "th" ? "th-TH" : "en-US", {
     day: "numeric",
     month: "short",
     hour: "2-digit",
@@ -1190,6 +1198,7 @@ const s = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
+    flexWrap: "wrap",
     paddingHorizontal: 24,
     paddingTop: 12,
     paddingBottom: 12,

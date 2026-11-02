@@ -1,5 +1,6 @@
+import { Text } from "../i18n";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Svg, { Line, Path } from "react-native-svg";
 import { colors, fonts } from "../theme";
 

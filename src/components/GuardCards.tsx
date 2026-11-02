@@ -1,3 +1,4 @@
+import { Text } from "../i18n";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   AccessibilityInfo,
@@ -8,7 +9,6 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   View,
   type LayoutChangeEvent,
   type NativeScrollEvent,

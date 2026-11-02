@@ -1,10 +1,10 @@
+import { Text } from "../i18n";
 import React, { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Platform,
   Pressable,
   StyleSheet,
-  Text,
   TextInput,
   View,
   type StyleProp,

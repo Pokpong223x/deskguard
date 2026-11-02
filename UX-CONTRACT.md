@@ -70,3 +70,7 @@ The carousel exposes its current card and named controls without requiring drag 
 Automated detector tests prove signal-processing edge cases, not real iPhone sensitivity or speaker behavior. Typecheck and iOS bundle export verify compile/bundle compatibility. Browser demo verifies interaction and persistence. Final physical iPhone test is required for sensor permission, real movement, sound, haptics, and lifecycle behavior. Device authentication additionally requires native success/cancellation/failure, OS passcode fallback, true-background-during-auth stale-result rejection, and Expo Go limitation checks. Dark-screen verification must distinguish foreground monitoring from a real lock; browser results cannot establish continuous background detection.
 
 The selected-clip reskin additionally requires rendered visual comparison against the extracted frame/contact sheet, documenting the intentional mobile adaptation, plus runtime checks of swipe/arrows, automatic pause, reduced motion, and the unchanged end-to-end guard/PIN flow. Design documentation alone does not establish that these checks passed.
+
+## Language
+The header language button switches between Thai and English. src/i18n.tsx owns the language context and persisted preference; src/translations.ts owns display translations. Event dates follow the chosen language. Switching language never resets monitoring. Unmapped diagnostic messages retain their original text rather than losing actionable detail.
+
